@@ -1,4 +1,5 @@
-# pip install PyMySQL
+import os
+
 import pymysql
 from tkinter import *
 from tkinter import ttk
@@ -6,13 +7,18 @@ from tkinter import messagebox
 import tkinter as tk
 
 
-# connection for phpmyadmin
+# Connect directly to MySQL
 def connection():
+    user = os.environ.get("DB_USER")
+    password = os.environ.get("DB_PASSWORD")
+    if not user or not password:
+        raise RuntimeError("Set DB_USER and DB_PASSWORD before running this app.")
+
     conn = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='vedant5121',
-        db='mydata',
+        host=os.environ.get("DB_HOST", "localhost"),
+        user=user,
+        password=password,
+        db=os.environ.get("DB_NAME", "mydata"),
     )
     return conn
 
